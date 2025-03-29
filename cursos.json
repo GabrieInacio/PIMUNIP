@@ -1,0 +1,17 @@
+{
+    "Python Basico": [
+        "Introduçao",
+        "Variaveis",
+        "Estruturas de Controle"
+    ],
+    "Pensamento Logico Computacional": [
+        "Conceitos Basicos",
+        "Resoluçao de Problemas",
+        "Algoritmos"
+    ],
+    "Segurança Digital": [
+        "Privacidade Online",
+        "Proteçao de Dados",
+        "Boas Praticas de Segurança"
+    ]
+}
