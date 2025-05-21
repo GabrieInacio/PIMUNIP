@@ -15,7 +15,10 @@ def carregar_dados_usuarios():
     global dados_usuarios
     if os.path.exists(CAMINHO_USUARIOS):
         with open(CAMINHO_USUARIOS, "r", encoding='utf-8') as arquivo:
-            dados_usuarios = json.load(arquivo)
+            try:
+                dados_usuarios = json.load(arquivo)
+            except (json.JSONDecodeError, ValueError):
+                dados_usuarios = {}
     else:
         dados_usuarios = {}
 
@@ -27,13 +30,28 @@ def carregar_dados_cursos():
     global dados_cursos
     if os.path.exists(CAMINHO_CURSOS):
         with open(CAMINHO_CURSOS, "r", encoding='utf-8') as arquivo:
-            dados_cursos = json.load(arquivo)
-    else:
-        dados_cursos = {
-            "Python Basico": ["Introdução", "Variáveis", "Estruturas de Controle"],
-            "Pensamento Lógico Computacional": ["Conceitos Básicos", "Resolução de Problemas", "Algoritmos"],
-            "Segurança Digital": ["Privacidade Online", "Proteção de Dados", "Boas Práticas de Segurança"]
-        }
+            try:
+                dados_cursos = json.load(arquivo)
+            except (json.JSONDecodeError, ValueError):
+                dados_cursos = {}
+    if not dados_cursos:
+        dados_cursos.update({
+            "Python Básico": {
+                "Introdução": "Este módulo apresenta o que é Python e suas aplicações.",
+                "Variáveis": "Aprenda o que são variáveis, tipos de dados e como usá-las.",
+                "Estruturas de Controle": "Conheça estruturas como if, for e while."
+            },
+            "Pensamento Lógico Computacional": {
+                "Conceitos Básicos": "Entenda como pensar logicamente para resolver problemas.",
+                "Resolução de Problemas": "Aprenda técnicas para dividir e resolver problemas complexos.",
+                "Algoritmos": "Descubra como criar algoritmos eficientes para suas soluções."
+            },
+            "Segurança Digital": {
+                "Privacidade Online": "Como manter sua privacidade e dados protegidos na internet.",
+                "Proteção de Dados": "Entenda como proteger informações sensíveis.",
+                "Boas Práticas de Segurança": "Veja dicas e hábitos para navegar com segurança."
+            }
+        })
         salvar_dados_cursos()
 
 def salvar_dados_cursos():
@@ -47,11 +65,8 @@ def exibir_menu_principal():
         print("\n========== PLATAFORMA DE EDUCAÇÃO DIGITAL SEGURA ==========")
         print("1. Fazer Login")
         print("2. Fazer Cadastro")
-        print("3. Ver Cursos")
-        print("4. Adicionar Módulos aos Cursos")
-        print("5. Informações de Segurança")
-        print("6. Sair")
-        print("7. Remover Usuário")
+        print("3. Informações de Segurança")
+        print("4. Sair")
         escolha = input("Escolha uma opção: ")
 
         if escolha == "1":
@@ -60,16 +75,10 @@ def exibir_menu_principal():
         elif escolha == "2":
             realizar_cadastro()
         elif escolha == "3":
-            listar_cursos()
-        elif escolha == "4":
-            adicionar_modulos()
-        elif escolha == "5":
             exibir_info_seguranca()
-        elif escolha == "6":
+        elif escolha == "4":
             print("Saindo...")
             break
-        elif escolha == "7":
-            remover_usuario()
         else:
             print("Opção inválida! Tente novamente.")
 
@@ -77,83 +86,95 @@ def exibir_menu_cursos():
     while True:
         print("\n--- Menu de Cursos ---")
         print("1. Ver Cursos Disponíveis")
-        print("2. Cadastrar Módulos nos Cursos")
-        print("3. Voltar ao Menu Principal")
+        print("2. Voltar ao Menu Principal")
         escolha = input("Escolha uma opção: ")
 
         if escolha == "1":
             listar_cursos()
         elif escolha == "2":
-            adicionar_modulos()
-        elif escolha == "3":
             break
         else:
             print("Opção inválida! Tente novamente.")
 
 def realizar_cadastro():
     print("\n--- Cadastro de Novo Usuário ---")
-    nome_usuario = input("Nome de usuário: ")
+    nome_usuario = input("Nome completo: ")
+    email_usuario = input("Email: ")
+
+    if any(usuario.get("email") == email_usuario for usuario in dados_usuarios.values()):
+        print("Email já cadastrado!")
+        return
+
     senha_usuario = gerar_hash(input("Senha: "))
 
-    if nome_usuario in dados_usuarios:
-        print("Usuário já cadastrado!")
-    else:
-        dados_usuarios[nome_usuario] = senha_usuario
-        salvar_dados_usuarios()
-        print("Cadastro realizado com sucesso!")
+    dados_usuarios[nome_usuario] = {
+        "senha": senha_usuario,
+        "email": email_usuario
+    }
+
+    salvar_dados_usuarios()
+    print("Cadastro realizado com sucesso!")
 
 def realizar_login():
     print("\n--- Login ---")
-    nome_usuario = input("Nome de usuário: ")
-    senha_usuario = gerar_hash(input("Senha: "))
+    email_digitado = input("Email: ")
+    senha_digitada = gerar_hash(input("Senha: "))
 
-    if nome_usuario in dados_usuarios and dados_usuarios[nome_usuario] == senha_usuario:
-        print("Login realizado com sucesso!")
-        return True
-    else:
-        print("Usuário ou senha incorretos!")
-        return False
+    for usuario in dados_usuarios.values():
+        if usuario["email"] == email_digitado and usuario["senha"] == senha_digitada:
+            print("Login realizado com sucesso!")
+            return True
+
+    print("Email ou senha incorretos!")
+    return False
 
 def listar_cursos():
     print("\n--- Cursos Disponíveis ---")
     if not dados_cursos:
         print("Nenhum curso disponível no momento.")
-    for nome_curso, lista_modulos in dados_cursos.items():
-        print(f"\nCurso: {nome_curso}")
-        print("Módulos:")
-        for modulo in lista_modulos:
-            print(f"  - {modulo}")
+        return
 
-def adicionar_modulos():
-    print("\n--- Adicionar Módulos aos Cursos ---")
-    nome_curso = input("Digite o nome do curso: ")
-    if nome_curso in dados_cursos:
-        nome_modulo = input("Digite o nome do módulo: ")
-        dados_cursos[nome_curso].append(nome_modulo)
-        salvar_dados_cursos()
-        print(f"Módulo '{nome_modulo}' adicionado ao curso '{nome_curso}'.")
+    cursos_lista = list(dados_cursos.keys())
+    for i, nome_curso in enumerate(cursos_lista, start=1):
+        print(f"{i}. {nome_curso}")
+
+    try:
+        escolha = int(input("Selecione um curso pelo número (ou 0 para voltar): "))
+        if escolha == 0:
+            return
+        curso_escolhido = cursos_lista[escolha - 1]
+    except (ValueError, IndexError):
+        print("Opção inválida!")
+        return
+
+    print(f"\nCurso selecionado: {curso_escolhido}")
+    print("Módulos:")
+    modulos = list(dados_cursos[curso_escolhido].keys())
+    for i, modulo in enumerate(modulos, start=1):
+        print(f"{i}. {modulo}")
+
+    try:
+        escolha_modulo = int(input("Selecione um módulo pelo número (ou 0 para voltar): "))
+        if escolha_modulo == 0:
+            return
+        modulo_escolhido = modulos[escolha_modulo - 1]
+        print(f"\nConteúdo do módulo '{modulo_escolhido}':")
+        print(dados_cursos[curso_escolhido][modulo_escolhido])
+    except (ValueError, IndexError):
+        print("Opção de módulo inválida!")
+
+
+def exibir_conteudo_modulo():
+    curso = input("Digite o nome do curso: ")
+    if curso not in dados_cursos:
+        print("Curso não encontrado.")
+        return
+    modulo = input("Digite o nome do módulo: ")
+    if modulo in dados_cursos[curso]:
+        print(f"\nConteúdo do módulo '{modulo}':")
+        print(dados_cursos[curso][modulo])
     else:
-        criar_curso = input("Curso não encontrado. Deseja criar este curso? (s/n): ").lower()
-        if criar_curso == "s":
-            nome_modulo = input("Digite o nome do módulo inicial: ")
-            dados_cursos[nome_curso] = [nome_modulo]
-            salvar_dados_cursos()
-            print(f"Curso '{nome_curso}' criado com o módulo '{nome_modulo}'.")
-
-def remover_usuario():
-    print("\n--- Remover Usuário ---")
-    nome_usuario = input("Digite o nome do usuário que deseja remover: ")
-
-    if nome_usuario in dados_usuarios:
-        confirmar = input(f"Tem certeza que deseja remover o usuário '{nome_usuario}'? (s/n): ").lower()
-        if confirmar == "s":
-            del dados_usuarios[nome_usuario]
-            salvar_dados_usuarios()
-            print(f"Usuário '{nome_usuario}' removido com sucesso!")
-        else:
-            print("Remoção cancelada.")
-    else:
-        print("Usuário não encontrado.")
+        print("Módulo não encontrado nesse curso.")
 
 def exibir_info_seguranca():
     print("\n--- Informações de Segurança ---")
