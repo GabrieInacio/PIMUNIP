@@ -1,17 +1,17 @@
 {
-    "Python Basico": [
-        "Introduçao",
-        "Variaveis",
-        "Estruturas de Controle"
-    ],
-    "Pensamento Logico Computacional": [
-        "Conceitos Basicos",
-        "Resoluçao de Problemas",
-        "Algoritmos"
-    ],
-    "Segurança Digital": [
-        "Privacidade Online",
-        "Proteçao de Dados",
-        "Boas Praticas de Segurança"
-    ]
+    "Python Básico": {
+        "Introdução": "Python é uma linguagem de programação de alto nível, interpretada e de propósito geral. Foi criada com o objetivo de ser fácil de ler e escrever, o que a torna ideal para quem está começando a programar.\n\nEla é usada por grandes empresas como Google, Netflix e NASA, tanto em projetos simples quanto em aplicações complexas.\n\nPor que aprender Python?\n- Fácil de entender e escrever\n- Alta demanda no mercado de trabalho\n- Multiplataforma e com milhares de bibliotecas disponíveis\n\nExemplo em pseudocódigo:\nINÍCIO\n    ESCREVA \"Olá, mundo!\"\nFIM",
+        "Variáveis": "Variáveis são como caixas onde podemos armazenar informações que queremos usar mais tarde. Elas podem guardar nomes, números, resultados de contas, etc.\n\nEm Python, você não precisa dizer qual é o tipo da variável, pois a linguagem entende isso automaticamente.\n\nTipos de dados mais comuns:\n- Texto: string (ex: \"Olá\")\n- Número inteiro: int (ex: 5)\n- Número com vírgula: float (ex: 3.14)\n- Verdadeiro ou Falso: bool\n\nPseudocódigo:\nnome ← \"Maria\"\nidade ← 25\naltura ← 1.65\nESCREVA nome, idade, altura\n\nOperações matemáticas:\na ← 10\nb ← 5\nsoma ← a + b\nproduto ← a * b\ndivisao ← a / b\nsubtracao ← a - b\nESCREVA soma, produto, divisao, subtracao",
+        "Estruturas de Controle": "As estruturas de controle permitem que o programa tome decisões e repita ações.\n\nCondicional (SE):\nINÍCIO\n    idade ← 18\n    SE idade ≥ 18 ENTÃO\n        ESCREVA \"Você é maior de idade.\"\n    SENÃO\n        ESCREVA \"Você é menor de idade.\"\nFIM\n\nLaço PARA:\nPARA i DE 0 ATÉ 4 FAÇA\n    ESCREVA \"Repetição:\", i\nFIMPARA\n\nLaço ENQUANTO:\ncontador ← 0\nENQUANTO contador < 3 FAÇA\n    ESCREVA \"Contando:\", contador\n    contador ← contador + 1\nFIM ENQUANTO"
+    },
+    "Pensamento Lógico Computacional": {
+        "Conceitos Básicos": "Pensar logicamente é organizar o raciocínio para chegar a uma solução de forma clara e eficiente. Na computação, isso significa criar instruções precisas para que o computador possa executá-las corretamente.\n\nConceitos importantes:\n- Sequência: ordem correta das instruções\n- Decisão: realizar uma ação se uma condição for verdadeira\n- Repetição: repetir ações até que uma condição seja satisfeita\n- Abstração: eliminar detalhes desnecessários\n- Decomposição: dividir o problema em partes menores",
+        "Resolução de Problemas": "Resolver problemas é a base da programação. Com o pensamento computacional, você consegue analisar uma situação e encontrar uma solução passo a passo, como uma receita de bolo.\n\nEtapas:\n1. Compreender o problema\n2. Dividir o problema\n3. Identificar padrões\n4. Planejar a solução\n5. Implementar e testar\n\nExemplo - Verificar se número é par ou ímpar:\nINÍCIO\n    LEIA numero\n    SE numero MOD 2 = 0 ENTÃO\n        ESCREVA \"Número é par\"\n    SENÃO\n        ESCREVA \"Número é ímpar\"\nFIM",
+        "Algoritmos": "Um algoritmo é uma sequência de passos que resolve um problema ou executa uma tarefa. É como um manual de instruções.\n\nCaracterísticas de um bom algoritmo:\n- Tem início e fim bem definidos\n- Resolve um problema específico\n- Cada passo é claro e preciso\n\nExemplo:\nINÍCIO\n    LEIA numero1\n    LEIA numero2\n    LEIA numero3\n    media ← (numero1 + numero2 + numero3) / 3\n    ESCREVA \"Média:\", media\nFIM"
+    },
+    "Segurança Digital": {
+        "Privacidade Online": "Privacidade online significa proteger suas informações pessoais enquanto navega na internet. Tudo o que fazemos online — pesquisar, postar, comprar — deixa rastros.\n\nBoas práticas:\n- Evite divulgar dados pessoais\n- Ajuste configurações de privacidade nas redes sociais\n- Use navegação anônima quando necessário\n- Desative permissões desnecessárias em apps",
+        "Proteção de Dados": "Seus dados são valiosos. Hackers e golpistas tentam roubá-los para aplicar fraudes.\n\nProteja seus dados assim:\n- Crie senhas fortes com letras, números e símbolos\n- Use autenticação em duas etapas\n- Nunca clique em links suspeitos\n- Faça backups regularmente, preferencialmente criptografados",
+        "Boas Práticas de Segurança": "Para manter seus dispositivos e informações seguras:\n\n- Atualize sistemas e aplicativos com frequência\n- Use antivírus confiável e mantenha-o ativado\n- Evite acessar contas bancárias em Wi-Fi público\n- Use senhas diferentes em cada site\n- Sempre faça logout em computadores públicos"
+    }
 }
